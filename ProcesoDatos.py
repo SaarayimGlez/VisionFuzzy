@@ -45,6 +45,8 @@ class ProcesoDatos():
         return dataset_completo
     
     
+    
+    
     def aplanar_histogramas_2d(self, ruta, patron, nombre_entrenamiento, nombre_test):
         datos = self.obtener_dataset(ruta, patron)
         
