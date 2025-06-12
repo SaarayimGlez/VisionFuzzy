@@ -5,9 +5,11 @@ import os
 
 class ProcesoDatos():
     
+    
+    
+    "Método que obtiene todos los conjuntos de datos cuyos nombres tengan el mismo patrón"
     def obtener_dataset(self, ruta, patron):
         archivos = glob.glob(os.path.join(ruta, patron))
-        print(f"Se encontraron {len(archivos)} archivos con patrón '{patron}'\n")
         
         dataset_completo = []
         for archivo in archivos:
@@ -40,13 +42,11 @@ class ProcesoDatos():
                 dataset_completo.append(entrada)
 
             mat_file.close()
-
-        print(f"\nTotal de muestras recopiladas: {len(dataset_completo)}")
         return dataset_completo
     
     
     
-    
+    "Método que aplana histograma de dos dimensiones a una"
     def aplanar_histogramas_2d(self, ruta, patron, nombre_entrenamiento, nombre_test):
         datos = self.obtener_dataset(ruta, patron)
         
@@ -61,16 +61,3 @@ class ProcesoDatos():
             
         
         
-
-procesar = ProcesoDatos()
-datos = procesar.aplanar_histogramas_2d(
-    'C:/Users/saara/Desktop/MIA 2/Vision por computadora/DataBase/', 
-    'DB2DLab*.mat', 'h2d_lab_train', 'h2d_lab_test'
-)
-
-print("\n--- Primer item del dataset con valores aplanados ---")
-for key, value in datos[0].items():
-    if isinstance(value, np.ndarray):
-        print(f"{key}: shape {value.shape}, dtype {value.dtype}")
-    else:
-        print(f"{key}: {value}")

@@ -6,7 +6,8 @@ from collections import defaultdict
 
 class KNN():
     
-    def clasificador_(self, entrenamiento, test, clase, k):
+    "Método que realiza la clasificación KNN"
+    def clasificador_KNN(self, entrenamiento, test, clase, k):
         predicciones = []
         
         X_train = np.array(entrenamiento)
@@ -16,17 +17,19 @@ class KNN():
         for x_test in X_test:
             distancias = np.linalg.norm(X_train - x_test, axis=1)
 
-            vecinos_idx = np.argsort(distancias)[:k]
+            vecinos_idx = np.argpartition(distancias, k)[:k]
 
             vecinos_clase = y_train[vecinos_idx]
 
-            pred = Counter(vecinos_clase).most_common(1)[0][0]
+            counts = Counter(vecinos_clase)
+            max_count = max(counts.values())
+            pred = [cls for cls, cnt in counts.items() if cnt == max_count][0]
             predicciones.append(pred)
 
         return predicciones
     
     
-    
+    "Método que realiza la clasificación Fuzzy KNN"
     def clasificador_fuzzy_knn(self, X_train, y_train, X_test, k=5, m=2):
         clases = np.unique(y_train)
         n_clases = len(clases)
