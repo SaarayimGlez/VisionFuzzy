@@ -104,18 +104,18 @@ class ProcesoDatos():
         y_clase = [d[nombre_clase] for d in datos_aplanados]
         y_super = [d[subclase] for d in datos_aplanados]
         
-        for i in range(20):
+        for i in range(10):
             print(i)
             accuracy_clase = knn.clasificador_KNN(X_train, X_test, y_clase,y_clase, 1)  
-            print("Accuracy ", i, ": ", accuracy_clase)
-
-              
+            accuracy, accurac2 = knn.clasificador_fuzzy_knn(X_train, X_test, y_clase, y_clase, 1, 2)
+            print("-----------------------------------------")
+                      
        # _, accuracy_super_clase = knn.clasificador_KNN(X_train, X_test, y_super, k)
         #print("Accuracy super clase: ", accuracy_super_clase)
 
 
 procesoDatos = ProcesoDatos()
-ruta = "C:/Users/saara/Desktop/MIA 2/Vision por computadora/DataBase"
+ruta = "C:/Users/Saarayim/Desktop/SAARA"
 patron = "DB2DLab*.mat"
 ruta_archivo = "C:/Users/saara/Desktop/MIA 2/Vision por computadora/DataBase/AverageRGB1_01-Oct-2020.mat"
 
