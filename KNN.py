@@ -7,26 +7,32 @@ from collections import defaultdict
 class KNN():
     
     "Método que realiza la clasificación KNN"
-    def clasificador_KNN(self, entrenamiento, test, clase, k):
+    def clasificador_KNN(self, entrenamiento, test, clase_train, clase_test, k):
         predicciones = []
         
         X_train = np.array(entrenamiento)
         X_test = np.array(test)
-        y_train = np.array(clase)
-        
+        y_train = np.array(clase_train)
+        y_test = np.array(clase_test)
+        i= 0
         for x_test in X_test:
-            distancias = np.linalg.norm(X_train - x_test, axis=1)
-
+            i = i + 1
+            distancias = np.sum(np.abs(X_train - x_test), axis=1)
+            
             vecinos_idx = np.argpartition(distancias, k)[:k]
-
-            vecinos_clase = y_train[vecinos_idx]
-
-            counts = Counter(vecinos_clase)
-            max_count = max(counts.values())
-            pred = [cls for cls, cnt in counts.items() if cnt == max_count][0]
-            predicciones.append(pred)
-
-        return predicciones
+            distancias_vecinos = distancias[vecinos_idx]
+            
+            pesos = 1.0 / (distancias_vecinos ** 2 + 1e-10)
+            
+            clases_vecinos = y_train[vecinos_idx]
+            conteo = {}
+            for cls, peso in zip(clases_vecinos, pesos):
+                conteo[cls] = conteo.get(cls, 0) + peso
+            
+            pred = max(conteo.items(), key=lambda x: x[1])[0]
+        
+        accuracy = np.mean(np.array(predicciones) == y_test)
+        return accuracy
     
     
     "Método que realiza la clasificación Fuzzy KNN"
