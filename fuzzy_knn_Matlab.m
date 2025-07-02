@@ -24,7 +24,7 @@ function [Accuracy_1, Accuracy_2, ...
         vecinos_dists = sorted_dists(1:K);
         vecinos_labels = labels_train(vecinos_idx);
         
-        % Evitar división entre cero
+
         vecinos_dists(vecinos_dists == 0) = 1e-10;
         weights = (1./vecinos_dists).^(2/(m-1));
         
@@ -36,14 +36,13 @@ function [Accuracy_1, Accuracy_2, ...
         
         class_membership = class_membership / sum(class_membership);
         membership_values(i,:) = class_membership;
-        
-        % Ordenar clases por pertenencia descendente
+
         [sorted_membership, sorted_idx] = sort(class_membership, 'descend');
         
         predicted_labels_1{i} = unique_classes{sorted_idx(1)};
         predicted_labels_2{i} = unique_classes{sorted_idx(2)};
         
-        % Imprimir el nivel de pertenencia de las dos clases principales
+
         fprintf('%s %.1f%%, %s %.1f%%\n', ...
             unique_classes{sorted_idx(1)}, sorted_membership(1)*100, ...
             unique_classes{sorted_idx(2)}, sorted_membership(2)*100);
@@ -54,18 +53,9 @@ function [Accuracy_1, Accuracy_2, ...
 end
 
 
-%% functions
+
 function [ accuracy, confusionMatrix, fails ] = accuracy( training_c_label, prediction_c_label )
- % confusionMatrix Genera matriz de confusión con datos de entrenamiento y
- % datos de predicción.
- % Entrada: 
- %         training_class_label vector de n x 1 que contiene el listado de
- %las clases de entrenamiento.
- %         prediction_class_label vector de n x 1 que contiene el listado
- % de las clases de predicción.
- % Salida
- %        accuracy: precisión
- %        confusionMatrix: Matriz de confusión de n x n
+
  
  if ~iscell(training_c_label) || ~iscell(prediction_c_label)  
     error('MyComponent:incorrectType',...
@@ -76,15 +66,12 @@ function [ accuracy, confusionMatrix, fails ] = accuracy( training_c_label, pred
  positions = unique(training_c_label);
  success = 0;
  fails = {};
- for i = 1: length(training_c_label) %recorrer todas las etiquetas de entrenamiento
-     % obtención de las correctas
+ for i = 1: length(training_c_label) 
      if(strcmpi(training_c_label{i},prediction_c_label{i}))
-        % disp([training_c_label(i),' - ',prediction_c_label(i)]);
         success = success + 1;
      else
-         fails = [fails; {training_c_label{i}, prediction_c_label{i}}]; %registro de los fallos de clasificación.
+         fails = [fails; {training_c_label{i}, prediction_c_label{i}}]; 
      end
-     % llenado de la matriz, entrenamiento y predicción.
      col = find(strcmp(positions, training_c_label{i}));
      row = find(strcmp(positions, prediction_c_label{i}));
      confusionMatrix(col,row) = confusionMatrix(col,row) + 1;     

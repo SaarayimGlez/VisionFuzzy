@@ -1,3 +1,7 @@
+%Esta es una función alterna a la que se usa originalmente, es usada para
+%procesar los histogramas que son demasiado grandes y pueden causar out of
+%memory. Procesa los conjuntos RGB para obtener el espacio de color HSI
+
 function [train, test, clase, superClase] = structDB2TrainingandTest(db, ini, fin, dimensionType)
     
     isHS = strcmp(dimensionType, '3DRGB2HS');
@@ -108,10 +112,10 @@ function vec = rgbHistToHsiVectorized(rgb_hist, onlyHS)
 
     if onlyHS
         idx = sub2ind([256, 256], h_bin, s_bin);
-        vec = sparse(1, idx, vals, 1, 256 * 256); % Vector HS
+        vec = sparse(1, idx, vals, 1, 256 * 256); 
     else
         idx = sub2ind([256, 256, 256], h_bin, s_bin, i_bin);
-        vec = sparse(1, idx, vals, 1, 256^3); % Vector HSI
+        vec = sparse(1, idx, vals, 1, 256^3);
     end
 end
 

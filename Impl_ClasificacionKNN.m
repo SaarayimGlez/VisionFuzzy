@@ -66,24 +66,20 @@ end
   
   etiquetas = [strcat("Muestra_", string(1:N))'; "Promedio"; "Desviacion"];
 
-    % Convertirlas a variable tipo string o cellstr
   etiquetas = cellstr(etiquetas);
     
-    % Construir la tabla
   Concentrado_hs = table(etiquetas, resAccuClase, resAccuClaseFuzzy, resAccuClaseFuzzy_2, ...
     'VariableNames', {'Muestra', 'KNN_Clasico', 'Fuzzy_KNN_1', 'Fuzzy_KNN_2'});
 
   Concentrado_ab = table(etiquetas, resAccuSuperClase, resAccuSuperClaseFuzzy, resAccuSuperClaseFuzzy_2, ...
     'VariableNames', {'Muestra', 'KNN_Clasico', 'Fuzzy_KNN_1', 'Fuzzy_KNN_2'});
 
-    
-    % Crear directorio si no existe
+
     finalDir = strcat(pathImg, 'Report');
     if ~exist(finalDir, 'dir')
         mkdir(finalDir);
     end
     
-    % Guardar en Excel
     filename = strcat(finalDir, '/D_', dimensionType, '_concentrado_', distance, '_', ponderar, '.xlsx');
     writetable(Concentrado_hs, filename, 'Sheet', 'Clases');
     writetable(Concentrado_ab, filename, 'Sheet', 'SuperClases');
